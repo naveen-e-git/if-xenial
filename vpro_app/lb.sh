@@ -89,10 +89,7 @@ location / {
 
 EOT
 
-         sudo cp -rvf vproapp /etc/nginx/conf.d/vproapp
-
-         cat /root/vproapp > /etc/nginx/conf.d/vproapp.conf
-
+         sudo cp -rvf vproapp /etc/nginx/conf.d/vproapp.conf
 
 
 #firewall enabiling
