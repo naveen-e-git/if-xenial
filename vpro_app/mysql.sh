@@ -15,6 +15,7 @@ then
           sudo  debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
           sudo apt-get update
           sudo apt-get install mysql-server -y
+	  sudo systemctl start mydql
           sed -i 's/127.0.0.1/0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
           echo "restoring  the dump file for the application"
           echo
@@ -24,8 +25,7 @@ then
           mysql -u root -e "grant all privileges on *.* TO 'root'@'%' identified by 'root'" --password='root';
           mysql -u root -e "create user 'admin'@'%' identified by 'admin123'" --password='root';
           mysql -u root -e "grant all privileges on *.* TO 'admin'@'%' identified by 'admin123'" --password='root';
-          mysql -u root --password='root' accounts < /root/VProfile/src/main/resources/db_backup.sql;
-          
+          mysql -u root --password='root' accounts < /root/VProfile/src/main/resources/db_backup.sql; 
           mysql -u root -e "FLUSH PRIVILEGES" --password='root';
           sudo  systemctl restart mysql
 
@@ -47,13 +47,13 @@ else
           sudo yum update -y
           sudo yum install mysql-server -y
 
-          sudo service mysqld start
-          sed -i 's/127.0.0.1/0.0.0.0/' /etc/my.cnf
+          sudo systemctl start mariadb
+          sudo echo "bind-address  = 0.0.0.0" >> /etc/my.cnf
 
           echo
           echo  "restoring  the dump file for the application"
           echo
-          mysql -u root -e "create database accounts";
+          mysql -u root -e "create database accounts" --password='';
           mysql -u root -e "grant all privileges on *.* TO 'root'@'app01.com' identified by 'root'" --password='';
           mysql -u root -e "create user 'admin'@'%' identified by 'admin'" --password='';
           mysql -u root -e "grant ALL privileges on *.* TO 'admin'@'%' identified by 'admin'" --password='';
@@ -62,7 +62,7 @@ else
           echo
           echo "starting & enabling mariadb-server"
           echo
-          sudo systemctl restart mysqld
+          sudo systemctl restart mariadb
           #sudo chkconfig mysqld on
           echo
           echo "starting the firewall and allowing the mariadb to access from port no. 3306"
