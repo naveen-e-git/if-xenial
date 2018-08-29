@@ -9,8 +9,7 @@
    build.vm.hostname = 'build01.com'
    build.vm.network "private_network", ip: "192.168.10.31"
    build.vm.provision "shell", inline: <<-SHELL
-   yum install epel-release -y
-   yum update -y
+   sudo apt update
    cd /root
    ./ciserver.sh
    SHELL
