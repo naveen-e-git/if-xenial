@@ -38,9 +38,10 @@ location / {
 }
 
 EOT
-                cp /root/vproapp /etc/nginx/site-available/vproapp 
-                rm -rfv /etc/nginx/site-enabled/default
-		ln -s /etc/nginx/site-available/vproapp /etc/nginx/site-enabled/
+                cp /root/vproapp /etc/nginx/sites-available/vproapp 
+                rm -rfv /etc/nginx/sites-enabled/default
+		rm -rfv /etc/nginx/sites-available/default
+		ln -s /etc/nginx/sites-available/vproapp /etc/nginx/sites-enabled/
                 sudo systemctl restart nginx
 
 #enable firewall
